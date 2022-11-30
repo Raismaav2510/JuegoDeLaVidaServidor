@@ -4,36 +4,46 @@ import java.util.Arrays;
 
 public class Matriz {
     private boolean celulas[][];
-    private int tamaño;
+    private int dimensiones;
+    private boolean inicializado;
 
-    public Matriz(int tamaño) {
-        this.celulas = new boolean[tamaño][tamaño];
-        this.tamaño = tamaño;
+    public Matriz(int dimensiones) {
+        this.dimensiones = dimensiones;
+        this.inicializado = false;
     }
 
     public void llenar() {
+        this.celulas = new boolean[dimensiones][dimensiones];
         for(int i = 0; i < this.celulas.length; i++) {
             for(int j = 0; j < this.celulas[i].length; j++) {
                 this.celulas[i][j] = false;
             }
         }
-        this.celulas[2][1] = true;
-        this.celulas[2][2] = true;
-        this.celulas[2][3] = true;
     }
 
-    public void llenarAleatorio() {
+    public void llenarMitad() {
         for(int i = 0; i < this.celulas.length; i++) {
-            for(int j = 0; j < this.celulas[i].length; j++) {
-                if ((int) (Math.random() * 2) == 1) {
-                    if ((int) (Math.random() * 2) == 1)
-                        celulas[i][j] = true;
-                    else
-                        celulas[i][j] = false;
-                } else
+            for(int j = 0; j < this.celulas[i].length / 2; j++) {
+                if ((int) (Math.random() * 4) == 1)
+                    celulas[i][j] = true;
+                else
                     celulas[i][j] = false;
             }
         }
+        inicializado = true;
+    }
+
+    public void llenarCompleto(Matriz primerMatriz) {
+        this.celulas = primerMatriz.getCelulas();
+        for(int i = 0; i < this.celulas.length; i++) {
+            for(int j = this.celulas.length / 2; j < this.celulas[i].length; j++) {
+                if ((int) (Math.random() * 4) == 1)
+                    celulas[i][j] = true;
+                else
+                    celulas[i][j] = false;
+            }
+        }
+        inicializado = true;
     }
 
     public void imprimir() {
@@ -47,10 +57,10 @@ public class Matriz {
     }
 
     public boolean[][] getCelulas() {
-        boolean matriz[][] = new boolean[tamaño][tamaño];
+        boolean matriz[][] = new boolean[dimensiones][dimensiones];
 
-        for (int i = 0; i < tamaño; i++) {
-            matriz[i] = Arrays.copyOf(this.celulas[i], tamaño);
+        for (int i = 0; i < dimensiones; i++) {
+            matriz[i] = Arrays.copyOf(this.celulas[i], dimensiones);
         }
         return matriz;
     }
@@ -60,8 +70,12 @@ public class Matriz {
     }
 
     public void setCelulas(boolean celulas[][]) {
-        for (int i = 0; i < tamaño; i++) {
-            this.celulas[i] = Arrays.copyOf(celulas[i], tamaño);
+        for (int i = 0; i < dimensiones; i++) {
+            this.celulas[i] = Arrays.copyOf(celulas[i], dimensiones);
         }
+    }
+
+    public boolean estaInicializada() {
+        return inicializado;
     }
 }
